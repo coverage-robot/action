@@ -1,0 +1,17 @@
+name: 'Coverage Action'
+description: 'Coverage Action'
+author: 'Ryan Maber'
+inputs:
+  files:
+    required: true
+    description: 'Multi-line selection of coverage files to upload'
+  tag:
+    required: true
+    description: 'Tag to use for the coverage upload'
+  github-token:
+    description: The GitHub token used to communicate with the Github API
+    default: ${{ github.token }}
+    required: false
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

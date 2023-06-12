@@ -1,0 +1,87 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+
+env:
+  node-version: 16.x
+
+jobs:
+  validate-dist:
+    name: Validate distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3.6.0
+        with:
+          node-version: ${{ env.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild distribution
+        run: |
+          npm run build:compile
+          npm run build:package
+
+      - name: Validate distribution
+        run: |
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff
+            exit 1
+          fi
+        id: diff
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: validate-dist
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3.6.0
+        with:
+          node-version: ${{ env.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Prettier
+        run: npm run lint:style
+
+      - name: Run ESLint
+        run: npm run lint:static-analysis
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3.6.0
+        with:
+          node-version: ${{ env.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:unit -- --ci --changedSince=${{ github.event.pull_request.base.sha }} --coverage --coverageDirectory=./coverage/jest
+
+      - uses: ./
+        with:
+          files: |
+            ./coverage/**/lcov.info
+          tag: "action-lcov"
+
+      - uses: ./
+        with:
+          files: |
+            ./coverage/**/clover.xml
+          tag: "action-clover"
