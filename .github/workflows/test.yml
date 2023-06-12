@@ -74,7 +74,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm run test:unit -- --ci --changedSince=${{ github.event.pull_request.base.sha }} --coverage --coverageDirectory=./coverage/jest
+        run: npm run test:unit -- --ci --coverage --coverageDirectory=./coverage/jest
 
       - uses: ./
         with:
