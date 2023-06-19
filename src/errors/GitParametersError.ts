@@ -10,6 +10,10 @@ class GitParametersError extends Error {
     static missingRef(): GitParametersError {
         return new GitParametersError("Unable to get current ref from git context.");
     }
+
+    static missingProjectRoot(): GitParametersError {
+        return new GitParametersError("Unable to get current project root from git context.");
+    }
 }
 
 export { GitParametersError };

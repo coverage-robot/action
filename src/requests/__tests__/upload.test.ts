@@ -1,7 +1,7 @@
 import { upload } from "../upload";
 import { HttpClient } from "@actions/http-client";
 import { readFileSync } from "fs";
-import { UploadError } from "../../errors";
+import { UploadError } from "@errors";
 
 describe("Given the upload helper", function () {
     it("uploads using correct fields", async () => {

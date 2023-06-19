@@ -28,6 +28,7 @@ describe("Given the parameters helper", () => {
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
+            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         getInput.mockReturnValueOnce("mock-tag");

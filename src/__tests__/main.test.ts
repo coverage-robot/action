@@ -41,6 +41,7 @@ describe("Given the main runtime", function () {
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
+            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         sign.mockReturnValueOnce({
@@ -68,6 +69,7 @@ describe("Given the main runtime", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         });
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
@@ -88,6 +90,7 @@ describe("Given the main runtime", function () {
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
+            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         sign.mockImplementation(() => {
@@ -111,6 +114,7 @@ describe("Given the main runtime", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         });
         expect(upload).not.toHaveBeenCalled();
     });
@@ -131,6 +135,7 @@ describe("Given the main runtime", function () {
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
+            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         sign.mockReturnValueOnce({
@@ -158,6 +163,7 @@ describe("Given the main runtime", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         });
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
