@@ -6,7 +6,7 @@ const context = {
 };
 const getEnvironmentVariable = jest.fn();
 
-import { getContextParameters, getGitParameters } from "@utilities";
+import { getContextParameters } from "@utilities";
 import * as pullRequestContext from "./fixtures/pull_request.json";
 
 jest.mock("@actions/github", () => ({
