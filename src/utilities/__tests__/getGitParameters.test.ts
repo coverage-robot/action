@@ -1,6 +1,5 @@
 const getCommit = jest.fn();
 const getEnvironmentVariable = jest.fn();
-const getExecOutput = jest.fn();
 
 import { GitParametersError } from "@errors";
 import * as pullRequestContext from "./fixtures/pull_request.json";
@@ -28,9 +27,6 @@ jest.mock("@actions/github", () => ({
 jest.mock("../getEnvironmentVariable", () => ({
     getEnvironmentVariable,
 }));
-jest.mock("@actions/exec", () => ({
-    getExecOutput,
-}));
 
 describe("Given the git parameters helper", function () {
     it("throws when unable to infer commit hash", async () => {
@@ -46,8 +42,6 @@ describe("Given the git parameters helper", function () {
     });
 
     it("correctly infers parent commits", async () => {
-        getExecOutput.mockResolvedValueOnce({ stdout: __dirname });
-
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
                 case "GITHUB_SHA":
@@ -79,8 +73,6 @@ describe("Given the git parameters helper", function () {
 
     it("prefers pull request event head commit when inferring commit hash", async () => {
         context.payload = pullRequestContext;
-
-        getExecOutput.mockResolvedValueOnce({ stdout: __dirname });
 
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
@@ -114,8 +106,6 @@ describe("Given the git parameters helper", function () {
     it("prefers pull request head ref when inferrable", async () => {
         context.payload = pullRequestContext;
 
-        getExecOutput.mockResolvedValueOnce({ stdout: __dirname });
-
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
                 case "GITHUB_SHA":
@@ -147,8 +137,6 @@ describe("Given the git parameters helper", function () {
 
     it("uses ref name when head ref not inferrable", async () => {
         context.payload = pullRequestContext;
-
-        getExecOutput.mockResolvedValueOnce({ stdout: __dirname });
 
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
