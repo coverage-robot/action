@@ -35,13 +35,13 @@ describe("Given the main runtime", function () {
             owner: "owner",
             pullRequest: undefined,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
-            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         sign.mockReturnValueOnce({
@@ -84,13 +84,13 @@ describe("Given the main runtime", function () {
             owner: "owner",
             pullRequest: undefined,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
-            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         sign.mockImplementation(() => {
@@ -129,13 +129,13 @@ describe("Given the main runtime", function () {
             owner: "owner",
             pullRequest: undefined,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
-            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         sign.mockReturnValueOnce({

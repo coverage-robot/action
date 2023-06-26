@@ -176,34 +176,4 @@ describe("Given the git parameters helper", function () {
             ref: "ref-name",
         });
     });
-
-    it("validates project root exists", async () => {
-        context.payload = pullRequestContext;
-
-        getExecOutput.mockResolvedValueOnce({ stdout: "some-invalid-path/" });
-
-        getEnvironmentVariable.mockImplementation((name) => {
-            switch (name) {
-                case "GITHUB_SHA":
-                    return "env-hash";
-                case "GITHUB_REF_NAME":
-                    return "ref-name";
-                default:
-                    return undefined;
-            }
-        });
-
-        getCommit.mockReturnValue({
-            data: {
-                parents: [{ sha: "parent-1" }, { sha: "parent-2" }],
-            },
-        });
-
-        expect(() =>
-            getGitParameters({
-                owner: "owner",
-                repository: "repo",
-            })
-        ).rejects.toThrow(GitParametersError.missingProjectRoot());
-    });
 });

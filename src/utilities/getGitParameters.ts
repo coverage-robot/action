@@ -4,8 +4,6 @@ import { GitParametersError } from "@errors";
 import { info } from "@actions/core";
 import { ContextParameters } from "./getContextParameters";
 import { getEnvironmentVariable } from "./getEnvironmentVariable";
-import { getExecOutput } from "@actions/exec";
-import { existsSync, lstatSync } from "fs";
 
 export type GitParameters = Awaited<ReturnType<typeof getGitParameters>>;
 
@@ -23,14 +21,6 @@ export const getGitParameters = async ({ owner, repository }: Pick<ContextParame
 
     info(`Inferred reference as ${ref}`);
 
-    const projectRoot = (await getExecOutput("git", ["rev-parse", "--show-toplevel"])).stdout;
-
-    if (!existsSync(projectRoot) || !lstatSync(projectRoot).isDirectory()) {
-        throw GitParametersError.missingProjectRoot();
-    }
-
-    info(`Inferred project root as ${projectRoot}`);
-
     const octokit = getOctokit(getInput("github-token"));
 
     try {
@@ -46,7 +36,7 @@ export const getGitParameters = async ({ owner, repository }: Pick<ContextParame
 
         info(`Inferred commit as ${commit}, and its parent as ${parentCommits.join(",")}`);
 
-        return { parent: parentCommits, commit, ref, projectRoot };
+        return { parent: parentCommits, commit, ref };
     } catch (error) {
         throw GitParametersError.missingParentCommit();
     }

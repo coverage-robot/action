@@ -22,13 +22,13 @@ describe("Given the parameters helper", () => {
             owner: "owner",
             pullRequest: 1,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
             commit: "event-commit-hash",
             parent: ["parent-1", "parent-2"],
             ref: "ref-name",
-            projectRoot: "mock-root/path",
         } satisfies GitParameters);
 
         getInput.mockReturnValueOnce("mock-tag");
