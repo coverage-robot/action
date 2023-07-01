@@ -22,6 +22,7 @@ describe("Given the parameters helper", () => {
             owner: "owner",
             pullRequest: 1,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({

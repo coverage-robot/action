@@ -12181,6 +12181,9 @@ class ContextParametersError extends Error {
     static missingParameter(parameter) {
         return new ContextParametersError("Unable to get parameter: " + parameter);
     }
+    static missingProjectRoot() {
+        return new ContextParametersError("Unable to get current project root from context.");
+    }
 }
 exports.ContextParametersError = ContextParametersError;
 
@@ -12372,9 +12375,12 @@ exports.getContextParameters = void 0;
 const github_1 = __nccwpck_require__(5438);
 const core_1 = __nccwpck_require__(2186);
 const _errors_1 = __nccwpck_require__(248);
+const getEnvironmentVariable_1 = __nccwpck_require__(6693);
+const fs_1 = __nccwpck_require__(7147);
 const getContextParameters = () => {
     var _a;
     const { owner, repo: repository } = github_1.context.repo;
+    const projectRoot = (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_WORKSPACE");
     const pullRequest = (_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
     if (!owner) {
         throw _errors_1.ContextParametersError.missingParameter("owner");
@@ -12382,8 +12388,11 @@ const getContextParameters = () => {
     if (!repository) {
         throw _errors_1.ContextParametersError.missingParameter("repository");
     }
-    (0, core_1.info)(`Inferred owner as ${owner}, in the repository ${repository}`);
-    return { owner, repository, pullRequest };
+    if (!projectRoot || !(0, fs_1.existsSync)(projectRoot) || !(0, fs_1.lstatSync)(projectRoot).isDirectory()) {
+        throw _errors_1.ContextParametersError.missingProjectRoot();
+    }
+    (0, core_1.info)(`Inferred owner as ${owner}, in the repository ${repository}. With a project root of ${projectRoot}`);
+    return { owner, repository, pullRequest, projectRoot };
 };
 exports.getContextParameters = getContextParameters;
 
@@ -12434,9 +12443,8 @@ const getGitParameters = ({ owner, repository }) => __awaiter(void 0, void 0, vo
     if (!ref) {
         throw _errors_1.GitParametersError.missingRef();
     }
-    const githubToken = (0, core_1.getInput)("github-token");
-    const octokit = (0, github_1.getOctokit)(githubToken);
     (0, core_2.info)(`Inferred reference as ${ref}`);
+    const octokit = (0, github_1.getOctokit)((0, core_1.getInput)("github-token"));
     try {
         const { data: { parents }, } = yield octokit.rest.git.getCommit({
             owner,

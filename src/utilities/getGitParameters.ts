@@ -19,11 +19,9 @@ export const getGitParameters = async ({ owner, repository }: Pick<ContextParame
         throw GitParametersError.missingRef();
     }
 
-    const githubToken = getInput("github-token");
-
-    const octokit = getOctokit(githubToken);
-
     info(`Inferred reference as ${ref}`);
+
+    const octokit = getOctokit(getInput("github-token"));
 
     try {
         const {

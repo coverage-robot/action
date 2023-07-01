@@ -35,6 +35,7 @@ describe("Given the main runtime", function () {
             owner: "owner",
             pullRequest: undefined,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
@@ -68,6 +69,7 @@ describe("Given the main runtime", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         });
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
@@ -82,6 +84,7 @@ describe("Given the main runtime", function () {
             owner: "owner",
             pullRequest: undefined,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
@@ -111,6 +114,7 @@ describe("Given the main runtime", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         });
         expect(upload).not.toHaveBeenCalled();
     });
@@ -125,6 +129,7 @@ describe("Given the main runtime", function () {
             owner: "owner",
             pullRequest: undefined,
             repository: "repo",
+            projectRoot: "mock-root/path",
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
@@ -158,6 +163,7 @@ describe("Given the main runtime", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         });
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });

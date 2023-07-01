@@ -1,8 +1,8 @@
 import { sign, SignedUrl } from "../sign";
 import { HttpClient } from "@actions/http-client";
 import { API_URL } from "../../config";
-import { SigningError } from "../../errors";
-import { Parameters } from "../../utilities";
+import { SigningError } from "@errors";
+import { Parameters } from "@utilities";
 
 describe("Given the sign helper", function () {
     it("signs request with correct parameters", async () => {
@@ -29,6 +29,7 @@ describe("Given the sign helper", function () {
             ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
+            projectRoot: "mock-root/path",
         } satisfies Parameters;
 
         await expect(sign(mockHttpClient, mockFileName, mockParameters)).resolves.toEqual({
