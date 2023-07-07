@@ -3,12 +3,14 @@ import { HttpClient } from "@actions/http-client";
 import * as glob from "@actions/glob";
 import { getParameters, Parameters } from "@utilities";
 import { sign, upload } from "@requests";
+import { getToken } from "./utilities/getToken";
 
 export const run = async () => {
     const client = new HttpClient("Client/Github");
 
     try {
         const files = getMultilineInput("files", { trimWhitespace: true, required: true });
+        const token = getToken();
 
         const parameters = await getParameters();
 
@@ -18,7 +20,7 @@ export const run = async () => {
         for await (const file of globber.globGenerator()) {
             info(`Found coverage file to upload: ${file}`);
 
-            const uploaded = handleUpload(client, file, parameters);
+            const uploaded = handleUpload(client, file, parameters, token);
 
             if (!uploaded) {
                 error(`Failed to upload coverage file: ${file}`);
@@ -32,9 +34,9 @@ export const run = async () => {
     }
 };
 
-export const handleUpload = async (client: HttpClient, file: string, parameters: Parameters) => {
+export const handleUpload = async (client: HttpClient, file: string, parameters: Parameters, token: string) => {
     try {
-        const { signedUrl, uploadId } = await sign(client, file, parameters);
+        const { signedUrl, uploadId } = await sign(client, file, parameters, token);
         info(`Coverage upload has been assigned ID: ${uploadId}`);
 
         return await upload(file, client, signedUrl);

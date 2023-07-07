@@ -6,6 +6,7 @@ import { Parameters } from "@utilities";
 
 describe("Given the sign helper", function () {
     it("signs request with correct parameters", async () => {
+        const mockToken = "mock-token";
         const post = jest.fn(() => ({
             statusCode: 200,
             result: {
@@ -32,18 +33,23 @@ describe("Given the sign helper", function () {
             projectRoot: "mock-root/path",
         } satisfies Parameters;
 
-        await expect(sign(mockHttpClient, mockFileName, mockParameters)).resolves.toEqual({
+        await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).resolves.toEqual({
             expiration: "2023-06-11 12:00:00",
             signedUrl: "mock-url",
             uploadId: "mock-upload",
         } satisfies SignedUrl);
 
-        expect(post).toHaveBeenCalledWith(`${API_URL}/upload`, {
-            data: { ...mockParameters, fileName: mockFileName },
-        });
+        expect(post).toHaveBeenCalledWith(
+            `${API_URL}/upload`,
+            {
+                data: { ...mockParameters, fileName: mockFileName },
+            },
+            { Authorization: `Basic ${btoa(mockToken)}` }
+        );
     });
 
     it("fails when receiving non-200 http code response", async () => {
+        const mockToken = "mock-token";
         const post = jest.fn(() => ({
             statusCode: 400,
             result: {} as SignedUrl,
@@ -56,16 +62,21 @@ describe("Given the sign helper", function () {
         const mockFileName = "mock-file.xml";
         const mockParameters = {} as Parameters;
 
-        await expect(sign(mockHttpClient, mockFileName, mockParameters)).rejects.toThrow(
+        await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).rejects.toThrow(
             SigningError.invalidResponseCode(400)
         );
 
-        expect(post).toHaveBeenCalledWith(`${API_URL}/upload`, {
-            data: { ...mockParameters, fileName: mockFileName },
-        });
+        expect(post).toHaveBeenCalledWith(
+            `${API_URL}/upload`,
+            {
+                data: { ...mockParameters, fileName: mockFileName },
+            },
+            { Authorization: `Basic ${btoa(mockToken)}` }
+        );
     });
 
     it("fails when no result provided", async () => {
+        const mockToken = "mock-token";
         const post = jest.fn(() => ({
             statusCode: 200,
         }));
@@ -77,16 +88,21 @@ describe("Given the sign helper", function () {
         const mockFileName = "mock-file.xml";
         const mockParameters = {} as Parameters;
 
-        await expect(sign(mockHttpClient, mockFileName, mockParameters)).rejects.toThrow(
+        await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).rejects.toThrow(
             SigningError.invalidResponseBody(200, null)
         );
 
-        expect(post).toHaveBeenCalledWith(`${API_URL}/upload`, {
-            data: { ...mockParameters, fileName: mockFileName },
-        });
+        expect(post).toHaveBeenCalledWith(
+            `${API_URL}/upload`,
+            {
+                data: { ...mockParameters, fileName: mockFileName },
+            },
+            { Authorization: `Basic ${btoa(mockToken)}` }
+        );
     });
 
     it("fails when signing result does not match expectation", async () => {
+        const mockToken = "mock-token";
         const mockResult = { signedUrl: "", "some-invalid-data": "" };
 
         const post = jest.fn(() => ({
@@ -101,12 +117,16 @@ describe("Given the sign helper", function () {
         const mockFileName = "mock-file.xml";
         const mockParameters = {} as Parameters;
 
-        await expect(sign(mockHttpClient, mockFileName, mockParameters)).rejects.toThrow(
+        await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).rejects.toThrow(
             SigningError.invalidResponseBody(200, JSON.stringify(mockResult))
         );
 
-        expect(post).toHaveBeenCalledWith(`${API_URL}/upload`, {
-            data: { ...mockParameters, fileName: mockFileName },
-        });
+        expect(post).toHaveBeenCalledWith(
+            `${API_URL}/upload`,
+            {
+                data: { ...mockParameters, fileName: mockFileName },
+            },
+            { Authorization: `Basic ${btoa(mockToken)}` }
+        );
     });
 });

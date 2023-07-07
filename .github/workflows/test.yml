@@ -78,12 +78,14 @@ jobs:
 
       - uses: ./
         with:
+          token: ${{ secrets.COVERAGE_TOKEN }}
           files: |
             ./coverage/**/lcov.info
           tag: "action-lcov"
 
       - uses: ./
         with:
+          token: ${{ secrets.COVERAGE_TOKEN }}
           files: |
             ./coverage/**/clover.xml
           tag: "action-clover"

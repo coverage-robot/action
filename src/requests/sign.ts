@@ -10,13 +10,24 @@ export type SignedUrl = {
     uploadId: string;
 };
 
-export const sign = async (client: HttpClient, file: string, parameters: Parameters): Promise<SignedUrl> => {
-    const response = await client.postJson<SignedUrl>(`${API_URL}/upload`, {
-        data: {
-            ...parameters,
-            fileName: file,
+export const sign = async (
+    client: HttpClient,
+    file: string,
+    parameters: Parameters,
+    token: string
+): Promise<SignedUrl> => {
+    const response = await client.postJson<SignedUrl>(
+        `${API_URL}/upload`,
+        {
+            data: {
+                ...parameters,
+                fileName: file,
+            },
         },
-    });
+        {
+            Authorization: `Basic ${btoa(token)}`,
+        }
+    );
 
     const { statusCode } = response;
 
