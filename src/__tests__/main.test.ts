@@ -55,22 +55,28 @@ describe("Given the main runtime", function () {
         await run();
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(1);
+        expect(getInput).toHaveBeenCalledTimes(2);
 
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
 
-        expect(sign).toHaveBeenNthCalledWith(1, expect.anything(), resolve(file), {
-            commit: "event-commit-hash",
-            owner: "owner",
-            parent: ["parent-1", "parent-2"],
-            provider: "github",
-            pullRequest: undefined,
-            ref: "ref-name",
-            repository: "repo",
-            tag: "mock-tag",
-            projectRoot: "mock-root/path",
-        });
+        expect(sign).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            resolve(file),
+            {
+                commit: "event-commit-hash",
+                owner: "owner",
+                parent: ["parent-1", "parent-2"],
+                provider: "github",
+                pullRequest: undefined,
+                ref: "ref-name",
+                repository: "repo",
+                tag: "mock-tag",
+                projectRoot: "mock-root/path",
+            },
+            expect.anything()
+        );
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
 
@@ -100,22 +106,28 @@ describe("Given the main runtime", function () {
         await run();
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(1);
+        expect(getInput).toHaveBeenCalledTimes(2);
 
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
 
-        expect(sign).toHaveBeenNthCalledWith(1, expect.anything(), resolve(file), {
-            commit: "event-commit-hash",
-            owner: "owner",
-            parent: ["parent-1", "parent-2"],
-            provider: "github",
-            pullRequest: undefined,
-            ref: "ref-name",
-            repository: "repo",
-            tag: "mock-tag",
-            projectRoot: "mock-root/path",
-        });
+        expect(sign).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            resolve(file),
+            {
+                commit: "event-commit-hash",
+                owner: "owner",
+                parent: ["parent-1", "parent-2"],
+                provider: "github",
+                pullRequest: undefined,
+                ref: "ref-name",
+                repository: "repo",
+                tag: "mock-tag",
+                projectRoot: "mock-root/path",
+            },
+            expect.anything()
+        );
         expect(upload).not.toHaveBeenCalled();
     });
 
@@ -149,22 +161,28 @@ describe("Given the main runtime", function () {
         await run();
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(1);
+        expect(getInput).toHaveBeenCalledTimes(2);
 
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
 
-        expect(sign).toHaveBeenNthCalledWith(1, expect.anything(), resolve(file), {
-            commit: "event-commit-hash",
-            owner: "owner",
-            parent: ["parent-1", "parent-2"],
-            provider: "github",
-            pullRequest: undefined,
-            ref: "ref-name",
-            repository: "repo",
-            tag: "mock-tag",
-            projectRoot: "mock-root/path",
-        });
+        expect(sign).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            resolve(file),
+            {
+                commit: "event-commit-hash",
+                owner: "owner",
+                parent: ["parent-1", "parent-2"],
+                provider: "github",
+                pullRequest: undefined,
+                ref: "ref-name",
+                repository: "repo",
+                tag: "mock-tag",
+                projectRoot: "mock-root/path",
+            },
+            expect.anything()
+        );
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
 });

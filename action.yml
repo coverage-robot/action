@@ -8,8 +8,11 @@ inputs:
   tag:
     required: true
     description: 'Tag to use for the coverage upload'
+  token:
+    required: true
+    description: 'The authentication token to validate authenticity of uploads'
   github-token:
-    description: The GitHub token used to communicate with the Github API
+    description: 'The GitHub token used to communicate with the Github API'
     default: ${{ github.token }}
     required: false
 runs:
