@@ -52,11 +52,13 @@ const http_client_1 = __nccwpck_require__(6255);
 const glob = __importStar(__nccwpck_require__(8090));
 const _utilities_1 = __nccwpck_require__(9294);
 const _requests_1 = __nccwpck_require__(8899);
+const getToken_1 = __nccwpck_require__(9228);
 const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, e_1, _b, _c;
     const client = new http_client_1.HttpClient("Client/Github");
     try {
         const files = (0, core_1.getMultilineInput)("files", { trimWhitespace: true, required: true });
+        const token = (0, getToken_1.getToken)();
         const parameters = yield (0, _utilities_1.getParameters)();
         (0, core_1.debug)(`Inferred parameters: ${JSON.stringify(parameters)}`);
         const globber = yield glob.create(files.join("\n"));
@@ -66,7 +68,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 _d = false;
                 const file = _c;
                 (0, core_1.info)(`Found coverage file to upload: ${file}`);
-                const uploaded = (0, exports.handleUpload)(client, file, parameters);
+                const uploaded = (0, exports.handleUpload)(client, file, parameters, token);
                 if (!uploaded) {
                     (0, core_1.error)(`Failed to upload coverage file: ${file}`);
                     continue;
@@ -88,9 +90,9 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.run = run;
-const handleUpload = (client, file, parameters) => __awaiter(void 0, void 0, void 0, function* () {
+const handleUpload = (client, file, parameters, token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { signedUrl, uploadId } = yield (0, _requests_1.sign)(client, file, parameters);
+        const { signedUrl, uploadId } = yield (0, _requests_1.sign)(client, file, parameters, token);
         (0, core_1.info)(`Coverage upload has been assigned ID: ${uploadId}`);
         return yield (0, _requests_1.upload)(file, client, signedUrl);
     }
@@ -102,6 +104,20 @@ const handleUpload = (client, file, parameters) => __awaiter(void 0, void 0, voi
     }
 });
 exports.handleUpload = handleUpload;
+
+
+/***/ }),
+
+/***/ 9228:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getToken = void 0;
+const core_1 = __nccwpck_require__(2186);
+const getToken = () => (0, core_1.getInput)("token", { trimWhitespace: true, required: true });
+exports.getToken = getToken;
 
 
 /***/ }),
@@ -12306,9 +12322,11 @@ exports.sign = void 0;
 const config_1 = __nccwpck_require__(6373);
 const core_1 = __nccwpck_require__(2186);
 const _errors_1 = __nccwpck_require__(248);
-const sign = (client, file, parameters) => __awaiter(void 0, void 0, void 0, function* () {
+const sign = (client, file, parameters, token) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield client.postJson(`${config_1.API_URL}/upload`, {
         data: Object.assign(Object.assign({}, parameters), { fileName: file }),
+    }, {
+        Authorization: `Basic ${btoa(token)}`,
     });
     const { statusCode } = response;
     (0, core_1.debug)(`Response while signing URL: ${JSON.stringify(response)}`);
