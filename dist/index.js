@@ -68,7 +68,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 _d = false;
                 const file = _c;
                 (0, core_1.info)(`Found coverage file to upload: ${file}`);
-                const uploaded = (0, exports.handleUpload)(client, file, parameters, token);
+                const uploaded = yield (0, exports.handleUpload)(client, file, parameters, token);
                 if (!uploaded) {
                     (0, core_1.error)(`Failed to upload coverage file: ${file}`);
                     continue;
