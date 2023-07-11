@@ -20,7 +20,7 @@ export const run = async () => {
         for await (const file of globber.globGenerator()) {
             info(`Found coverage file to upload: ${file}`);
 
-            const uploaded = handleUpload(client, file, parameters, token);
+            const uploaded = await handleUpload(client, file, parameters, token);
 
             if (!uploaded) {
                 error(`Failed to upload coverage file: ${file}`);
