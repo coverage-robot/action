@@ -2,7 +2,7 @@
   "name": "coverage-action",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Coverage Robot for GitHub Actions",
   "main": "lib/runtime.js",
   "scripts": {
     "build:compile": "tsc",
