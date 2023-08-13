@@ -33,7 +33,7 @@ describe("Given the upload helper", function () {
         const mockSignedUrl = "mock-signed-url.com";
 
         await expect(upload(mockFileName, mockHttpClient, mockSignedUrl)).rejects.toThrow(
-            UploadError.fileNotFound(mockFileName)
+            UploadError.fileNotFound(mockFileName),
         );
 
         expect(put).not.toHaveBeenCalled();
@@ -52,7 +52,7 @@ describe("Given the upload helper", function () {
         const mockSignedUrl = "mock-signed-url.com";
 
         await expect(upload(mockFileName, mockHttpClient, mockSignedUrl)).rejects.toThrow(
-            UploadError.uploadNotSuccessful(403, "")
+            UploadError.uploadNotSuccessful(403, ""),
         );
 
         expect(put).toHaveBeenCalledWith(mockSignedUrl, mockFileContent);

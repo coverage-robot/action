@@ -31,7 +31,7 @@ jest.mock("../getEnvironmentVariable", () => ({
 describe("Given the git parameters helper", function () {
     it("throws when unable to infer commit hash", async () => {
         await expect(getGitParameters({ owner: "", repository: "" })).rejects.toThrow(
-            GitParametersError.missingCommit()
+            GitParametersError.missingCommit(),
         );
     });
 
@@ -63,7 +63,7 @@ describe("Given the git parameters helper", function () {
             await getGitParameters({
                 owner: "owner",
                 repository: "repo",
-            })
+            }),
         ).toMatchObject({
             parent: ["parent-1", "parent-2"],
         });
@@ -97,7 +97,7 @@ describe("Given the git parameters helper", function () {
             await getGitParameters({
                 owner: "owner",
                 repository: "repo",
-            })
+            }),
         ).toMatchObject({
             commit: "event-commit-hash",
         });
@@ -129,7 +129,7 @@ describe("Given the git parameters helper", function () {
             await getGitParameters({
                 owner: "owner",
                 repository: "repo",
-            })
+            }),
         ).toMatchObject({
             ref: "head-ref",
         });
@@ -159,7 +159,7 @@ describe("Given the git parameters helper", function () {
             await getGitParameters({
                 owner: "owner",
                 repository: "repo",
-            })
+            }),
         ).toMatchObject({
             ref: "ref-name",
         });

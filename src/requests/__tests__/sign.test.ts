@@ -44,7 +44,7 @@ describe("Given the sign helper", function () {
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
-            { Authorization: `Basic ${btoa(mockToken)}` }
+            { Authorization: `Basic ${btoa(mockToken)}` },
         );
     });
 
@@ -63,7 +63,7 @@ describe("Given the sign helper", function () {
         const mockParameters = {} as Parameters;
 
         await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).rejects.toThrow(
-            SigningError.invalidResponseCode(400)
+            SigningError.invalidResponseCode(400),
         );
 
         expect(post).toHaveBeenCalledWith(
@@ -71,7 +71,7 @@ describe("Given the sign helper", function () {
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
-            { Authorization: `Basic ${btoa(mockToken)}` }
+            { Authorization: `Basic ${btoa(mockToken)}` },
         );
     });
 
@@ -89,7 +89,7 @@ describe("Given the sign helper", function () {
         const mockParameters = {} as Parameters;
 
         await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).rejects.toThrow(
-            SigningError.invalidResponseBody(200, null)
+            SigningError.invalidResponseBody(200, null),
         );
 
         expect(post).toHaveBeenCalledWith(
@@ -97,7 +97,7 @@ describe("Given the sign helper", function () {
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
-            { Authorization: `Basic ${btoa(mockToken)}` }
+            { Authorization: `Basic ${btoa(mockToken)}` },
         );
     });
 
@@ -118,7 +118,7 @@ describe("Given the sign helper", function () {
         const mockParameters = {} as Parameters;
 
         await expect(sign(mockHttpClient, mockFileName, mockParameters, mockToken)).rejects.toThrow(
-            SigningError.invalidResponseBody(200, JSON.stringify(mockResult))
+            SigningError.invalidResponseBody(200, JSON.stringify(mockResult)),
         );
 
         expect(post).toHaveBeenCalledWith(
@@ -126,7 +126,7 @@ describe("Given the sign helper", function () {
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
-            { Authorization: `Basic ${btoa(mockToken)}` }
+            { Authorization: `Basic ${btoa(mockToken)}` },
         );
     });
 });
