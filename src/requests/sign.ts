@@ -14,7 +14,7 @@ export const sign = async (
     client: HttpClient,
     file: string,
     parameters: Parameters,
-    token: string
+    token: string,
 ): Promise<SignedUrl> => {
     const response = await client.postJson<SignedUrl>(
         `${API_URL}/upload`,
@@ -26,7 +26,7 @@ export const sign = async (
         },
         {
             Authorization: `Basic ${btoa(token)}`,
-        }
+        },
     );
 
     const { statusCode } = response;

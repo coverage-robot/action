@@ -75,7 +75,7 @@ describe("Given the main runtime", function () {
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
             },
-            expect.anything()
+            expect.anything(),
         );
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
@@ -126,7 +126,7 @@ describe("Given the main runtime", function () {
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
             },
-            expect.anything()
+            expect.anything(),
         );
         expect(upload).not.toHaveBeenCalled();
     });
@@ -181,7 +181,7 @@ describe("Given the main runtime", function () {
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
             },
-            expect.anything()
+            expect.anything(),
         );
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });

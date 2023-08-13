@@ -5,7 +5,7 @@ class SigningError extends Error {
 
     static invalidResponseBody(statusCode: number, body: string | null): SigningError {
         return new SigningError(
-            `Invalid body returned when signing upload. Status code: ${statusCode}, body: ${body ?? "none returned"}`
+            `Invalid body returned when signing upload. Status code: ${statusCode}, body: ${body ?? "none returned"}`,
         );
     }
 }
