@@ -1,27 +1,23 @@
 {
-  "name": "coverage-action",
+  "name": "action",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "Coverage Robot for GitHub Actions",
   "main": "lib/runtime.js",
   "scripts": {
     "build:compile": "tsc",
-    "build:package": "ncc build --source-map --license licenses.txt",
+    "build:package": "ncc build --license licenses.txt",
     "lint:style": "prettier --check **/*.ts",
     "lint:static-analysis": "eslint src/**/*.ts",
     "test:unit": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
-  },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "coverage",
+    "coverage robot"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Coverage Robot",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
