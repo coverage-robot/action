@@ -1,5 +1,5 @@
 {
-  "name": "coverage-action",
+  "name": "action",
   "version": "0.0.0",
   "private": true,
   "description": "Coverage Robot for GitHub Actions",

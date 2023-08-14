@@ -1,6 +1,6 @@
-name: 'Coverage Action'
-description: 'Coverage Action'
-author: 'Ryan Maber'
+name: 'Coverage Robot Action'
+description: 'GitHub Action for integrating with Coverage Robot'
+author: 'Coverage Robot'
 inputs:
   files:
     required: true
