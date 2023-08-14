@@ -1,6 +1,9 @@
 name: 'Coverage Robot Action'
 description: 'GitHub Action for integrating with Coverage Robot'
 author: 'Coverage Robot'
+branding:
+    icon: 'upload-cloud'
+    color: 'white'
 inputs:
   files:
     required: true
