@@ -4,8 +4,18 @@ updates:
     directory: /
     schedule:
       interval: daily
+    labels:
+        - "dependencies"
+        - "github_actions"
+        - "chore"
+        - "bump-patch"
 
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: daily
+    labels:
+        - "dependencies"
+        - "javascript"
+        - "chore"
+        - "bump-patch"
