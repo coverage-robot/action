@@ -1,4 +1,4 @@
-import { debug, getMultilineInput, info, setFailed, error } from "@actions/core";
+import {debug, getMultilineInput, info, setFailed, error, getInput} from "@actions/core";
 import { HttpClient } from "@actions/http-client";
 import * as glob from "@actions/glob";
 import { getParameters, Parameters } from "@utilities";
@@ -9,6 +9,7 @@ export const run = async () => {
     const client = new HttpClient("Client/Github");
 
     try {
+        const endpoint = getInput("endpoint", { trimWhitespace: true, required: false });
         const files = getMultilineInput("files", { trimWhitespace: true, required: true });
         const token = getToken();
 
@@ -20,7 +21,7 @@ export const run = async () => {
         for await (const file of globber.globGenerator()) {
             info(`Found coverage file to upload: ${file}`);
 
-            const uploaded = await handleUpload(client, file, parameters, token);
+            const uploaded = await handleUpload(client, file, parameters, endpoint, token);
 
             if (!uploaded) {
                 error(`Failed to upload coverage file: ${file}`);
@@ -34,9 +35,9 @@ export const run = async () => {
     }
 };
 
-export const handleUpload = async (client: HttpClient, file: string, parameters: Parameters, token: string) => {
+export const handleUpload = async (client: HttpClient, file: string, parameters: Parameters, endpoint: string, token: string) => {
     try {
-        const { signedUrl, uploadId } = await sign(client, file, parameters, token);
+        const { signedUrl, uploadId } = await sign(client, file, parameters, endpoint, token);
         info(`Coverage upload has been assigned ID: ${uploadId}`);
 
         return await upload(file, client, signedUrl);

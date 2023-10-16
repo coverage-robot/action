@@ -57,6 +57,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, e_1, _b, _c;
     const client = new http_client_1.HttpClient("Client/Github");
     try {
+        const endpoint = (0, core_1.getInput)("endpoint", { trimWhitespace: true, required: false });
         const files = (0, core_1.getMultilineInput)("files", { trimWhitespace: true, required: true });
         const token = (0, getToken_1.getToken)();
         const parameters = yield (0, _utilities_1.getParameters)();
@@ -68,7 +69,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
                 _d = false;
                 const file = _c;
                 (0, core_1.info)(`Found coverage file to upload: ${file}`);
-                const uploaded = yield (0, exports.handleUpload)(client, file, parameters, token);
+                const uploaded = yield (0, exports.handleUpload)(client, file, parameters, endpoint, token);
                 if (!uploaded) {
                     (0, core_1.error)(`Failed to upload coverage file: ${file}`);
                     continue;
@@ -90,9 +91,9 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.run = run;
-const handleUpload = (client, file, parameters, token) => __awaiter(void 0, void 0, void 0, function* () {
+const handleUpload = (client, file, parameters, endpoint, token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { signedUrl, uploadId } = yield (0, _requests_1.sign)(client, file, parameters, token);
+        const { signedUrl, uploadId } = yield (0, _requests_1.sign)(client, file, parameters, endpoint, token);
         (0, core_1.info)(`Coverage upload has been assigned ID: ${uploadId}`);
         return yield (0, _requests_1.upload)(file, client, signedUrl);
     }
@@ -12193,18 +12194,6 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 6373:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.API_URL = void 0;
-exports.API_URL = "https://api.coveragerobot.com/v1";
-
-
-/***/ }),
-
 /***/ 5809:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -12338,11 +12327,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.sign = void 0;
-const config_1 = __nccwpck_require__(6373);
 const core_1 = __nccwpck_require__(2186);
 const _errors_1 = __nccwpck_require__(248);
-const sign = (client, file, parameters, token) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield client.postJson(`${config_1.API_URL}/upload`, {
+const sign = (client, file, parameters, endpoint, token) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield client.postJson(`${endpoint}/upload`, {
         data: Object.assign(Object.assign({}, parameters), { fileName: file }),
     }, {
         Authorization: `Basic ${btoa(token)}`,

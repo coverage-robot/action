@@ -14,6 +14,10 @@ inputs:
   token:
     required: true
     description: 'The authentication token to validate authenticity of uploads'
+  endpoint:
+      required: false
+      default: 'https://api.coveragerobot.com/v1'
+      description: 'Tag to use for the coverage upload'
   github-token:
     description: 'The GitHub token used to communicate with the Github API'
     default: ${{ github.token }}

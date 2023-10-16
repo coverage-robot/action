@@ -29,7 +29,7 @@ describe("Given the main runtime", function () {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
         getMultilineInput.mockImplementation((name) => (name === "files" ? [file] : []));
-        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : ""));
+        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : ""));
 
         getContextParameters.mockReturnValueOnce({
             owner: "owner",
@@ -55,7 +55,7 @@ describe("Given the main runtime", function () {
         await run();
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(2);
+        expect(getInput).toHaveBeenCalledTimes(3);
 
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
@@ -75,6 +75,7 @@ describe("Given the main runtime", function () {
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
             },
+            "mock-endpoint",
             expect.anything(),
         );
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
@@ -84,7 +85,7 @@ describe("Given the main runtime", function () {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
         getMultilineInput.mockImplementation((name) => (name === "files" ? [file] : []));
-        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : ""));
+        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : ""));
 
         getContextParameters.mockReturnValueOnce({
             owner: "owner",
@@ -106,7 +107,7 @@ describe("Given the main runtime", function () {
         await run();
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(2);
+        expect(getInput).toHaveBeenCalledTimes(3);
 
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
@@ -126,6 +127,7 @@ describe("Given the main runtime", function () {
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
             },
+            "mock-endpoint",
             expect.anything(),
         );
         expect(upload).not.toHaveBeenCalled();
@@ -135,7 +137,7 @@ describe("Given the main runtime", function () {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
         getMultilineInput.mockImplementation((name) => (name === "files" ? ["src/__tests__/fixtures/*.xml"] : []));
-        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : ""));
+        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : ""));
 
         getContextParameters.mockReturnValueOnce({
             owner: "owner",
@@ -161,7 +163,7 @@ describe("Given the main runtime", function () {
         await run();
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(2);
+        expect(getInput).toHaveBeenCalledTimes(3);
 
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
@@ -181,6 +183,7 @@ describe("Given the main runtime", function () {
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
             },
+            "mock-endpoint",
             expect.anything(),
         );
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
