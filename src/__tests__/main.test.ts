@@ -29,7 +29,9 @@ describe("Given the main runtime", function () {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
         getMultilineInput.mockImplementation((name) => (name === "files" ? [file] : []));
-        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : ""));
+        getInput.mockImplementation((name) =>
+            name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : "",
+        );
 
         getContextParameters.mockReturnValueOnce({
             owner: "owner",
@@ -85,7 +87,9 @@ describe("Given the main runtime", function () {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
         getMultilineInput.mockImplementation((name) => (name === "files" ? [file] : []));
-        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : ""));
+        getInput.mockImplementation((name) =>
+            name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : "",
+        );
 
         getContextParameters.mockReturnValueOnce({
             owner: "owner",
@@ -137,7 +141,9 @@ describe("Given the main runtime", function () {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
         getMultilineInput.mockImplementation((name) => (name === "files" ? ["src/__tests__/fixtures/*.xml"] : []));
-        getInput.mockImplementation((name) => (name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : ""));
+        getInput.mockImplementation((name) =>
+            name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : "",
+        );
 
         getContextParameters.mockReturnValueOnce({
             owner: "owner",

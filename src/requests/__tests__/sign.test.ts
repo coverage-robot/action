@@ -39,7 +39,7 @@ describe("Given the sign helper", function () {
         } satisfies SignedUrl);
 
         expect(post).toHaveBeenCalledWith(
-            'mock-endpoint/upload',
+            "mock-endpoint/upload",
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
@@ -66,7 +66,7 @@ describe("Given the sign helper", function () {
         );
 
         expect(post).toHaveBeenCalledWith(
-            'mock-endpoint/upload',
+            "mock-endpoint/upload",
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
@@ -92,7 +92,7 @@ describe("Given the sign helper", function () {
         );
 
         expect(post).toHaveBeenCalledWith(
-            'mock-endpoint/upload',
+            "mock-endpoint/upload",
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
@@ -121,7 +121,7 @@ describe("Given the sign helper", function () {
         );
 
         expect(post).toHaveBeenCalledWith(
-            'mock-endpoint/upload',
+            "mock-endpoint/upload",
             {
                 data: { ...mockParameters, fileName: mockFileName },
             },
