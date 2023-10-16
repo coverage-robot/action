@@ -1,4 +1,3 @@
-import { API_URL } from "../config";
 import { debug } from "@actions/core";
 import { HttpClient } from "@actions/http-client";
 import { SigningError } from "@errors";
@@ -14,10 +13,11 @@ export const sign = async (
     client: HttpClient,
     file: string,
     parameters: Parameters,
+    endpoint: string,
     token: string,
 ): Promise<SignedUrl> => {
     const response = await client.postJson<SignedUrl>(
-        `${API_URL}/upload`,
+        `${endpoint}/upload`,
         {
             data: {
                 ...parameters,
