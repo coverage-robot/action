@@ -1,4 +1,6 @@
 # Coverage Robot Action
+![coverage](https://api.coveragerobot.com/v1/graph/github/coverage-robot/action/badge.svg?token=753af2e31509c5aedbc13fbd5359bc8c77e4d7b1071a9758d0)
+
 This GitHub Action allows for accepting uploads of coverage reports conveniently into Coverage Robot.
 
 ## Usage
