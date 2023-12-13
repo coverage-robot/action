@@ -10,5 +10,6 @@ module.exports = {
         "^@utilities(.*)$": "<rootDir>/src/utilities$1",
         "^@errors(.*)$": "<rootDir>/src/errors",
     },
+    collectCoverageFrom: ["<rootDir>/src/**/*.ts", "!<rootDir>/src/**/__tests__/**/*"],
     verbose: true,
 };
