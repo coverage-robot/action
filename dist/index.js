@@ -31710,8 +31710,8 @@ const getGitParameters = ({ owner, repository }) => __awaiter(void 0, void 0, vo
     }
     (0, core_2.info)(`Inferred reference as ${head.ref}`);
     if (base.commit || base.ref) {
-        (0, core_2.info)(`Inferred PRs base reference as ${base.commit}`);
-        (0, core_2.info)(`Inferred PRs base commit as ${base.ref}`);
+        (0, core_2.info)(`Inferred PRs base reference as ${base.ref}`);
+        (0, core_2.info)(`Inferred PRs base commit as ${base.commit}`);
     }
     const octokit = (0, github_1.getOctokit)((0, core_1.getInput)("github-token"));
     try {

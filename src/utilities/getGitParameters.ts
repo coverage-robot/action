@@ -29,8 +29,8 @@ export const getGitParameters = async ({ owner, repository }: Pick<ContextParame
     info(`Inferred reference as ${head.ref}`);
 
     if (base.commit || base.ref) {
-        info(`Inferred PRs base reference as ${base.commit}`);
-        info(`Inferred PRs base commit as ${base.ref}`);
+        info(`Inferred PRs base reference as ${base.ref}`);
+        info(`Inferred PRs base commit as ${base.commit}`);
     }
 
     const octokit = getOctokit(getInput("github-token"));
