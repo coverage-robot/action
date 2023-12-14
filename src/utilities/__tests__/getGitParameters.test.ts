@@ -66,6 +66,45 @@ describe("Given the git parameters helper", function () {
             }),
         ).toMatchObject({
             parent: ["parent-1", "parent-2"],
+            base: {
+                commit: undefined,
+                ref: undefined
+            }
+        });
+
+        expect(getCommit).toHaveBeenCalled();
+    });
+
+    it("correctly infers base ref and commit from pull request context", async () => {
+        context.payload = pullRequestContext;
+
+        getEnvironmentVariable.mockImplementation((name) => {
+            switch (name) {
+                case "GITHUB_SHA":
+                    return "hash";
+                case "GITHUB_HEAD_REF":
+                    return "head-ref";
+                default:
+                    return undefined;
+            }
+        });
+
+        getCommit.mockReturnValue({
+            data: {
+                parents: [{ sha: "parent-1" }, { sha: "parent-2" }],
+            },
+        });
+
+        expect(
+            await getGitParameters({
+                owner: "owner",
+                repository: "repo",
+            }),
+        ).toMatchObject({
+            base: {
+                commit: "mock-base-commit",
+                ref: "master",
+            }
         });
 
         expect(getCommit).toHaveBeenCalled();
@@ -99,7 +138,9 @@ describe("Given the git parameters helper", function () {
                 repository: "repo",
             }),
         ).toMatchObject({
-            commit: "event-commit-hash",
+            head: {
+                commit: "event-commit-hash",
+            }
         });
     });
 
@@ -131,7 +172,9 @@ describe("Given the git parameters helper", function () {
                 repository: "repo",
             }),
         ).toMatchObject({
-            ref: "head-ref",
+            head: {
+                ref: "head-ref",
+            }
         });
     });
 
@@ -161,7 +204,9 @@ describe("Given the git parameters helper", function () {
                 repository: "repo",
             }),
         ).toMatchObject({
-            ref: "ref-name",
+            head: {
+                ref: "ref-name",
+            }
         });
     });
 });

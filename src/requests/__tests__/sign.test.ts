@@ -21,16 +21,22 @@ describe("Given the sign helper", function () {
 
         const mockFileName = "mock-file.xml";
         const mockParameters = {
-            commit: "event-commit-hash",
+            head: {
+                commit: "event-commit-hash",
+                ref: "ref-name",
+            },
+            base: {
+                commit: "mock-base-commit",
+                ref: "mock-base-ref",
+            },
             owner: "owner",
             parent: ["parent-1", "parent-2"],
             provider: "github",
             pullRequest: 1,
-            ref: "ref-name",
             repository: "repo",
             tag: "mock-tag",
             projectRoot: "mock-root/path",
-        } satisfies Parameters;
+        };
 
         await expect(sign(mockHttpClient, mockFileName, mockParameters, "mock-endpoint", mockToken)).resolves.toEqual({
             expiration: "2023-06-11 12:00:00",
@@ -41,7 +47,20 @@ describe("Given the sign helper", function () {
         expect(post).toHaveBeenCalledWith(
             "mock-endpoint/upload",
             {
-                data: { ...mockParameters, fileName: mockFileName },
+                data: {
+                    commit: "event-commit-hash",
+                    ref: "ref-name",
+                    baseCommit: "mock-base-commit",
+                    baseRef: "mock-base-ref",
+                    owner: "owner",
+                    parent: ["parent-1", "parent-2"],
+                    provider: "github",
+                    pullRequest: 1,
+                    repository: "repo",
+                    tag: "mock-tag",
+                    projectRoot: "mock-root/path",
+                    fileName: mockFileName
+                },
             },
             { Authorization: `Basic ${btoa(mockToken)}` },
         );
@@ -124,6 +143,66 @@ describe("Given the sign helper", function () {
             "mock-endpoint/upload",
             {
                 data: { ...mockParameters, fileName: mockFileName },
+            },
+            { Authorization: `Basic ${btoa(mockToken)}` },
+        );
+    });
+
+    it("signs request with no base context", async () => {
+        const mockToken = "mock-token";
+        const post = jest.fn(() => ({
+            statusCode: 200,
+            result: {
+                expiration: "2023-06-11 12:00:00",
+                signedUrl: "mock-url",
+                uploadId: "mock-upload",
+            } satisfies SignedUrl,
+        }));
+
+        const mockHttpClient = {
+            postJson: post,
+        } as unknown as HttpClient;
+
+        const mockFileName = "mock-file.xml";
+        const mockParameters = {
+            head: {
+                commit: "event-commit-hash",
+                ref: "ref-name",
+            },
+            base: {
+                commit: undefined,
+                ref: undefined,
+            },
+            owner: "owner",
+            parent: ["parent-1", "parent-2"],
+            provider: "github",
+            pullRequest: 1,
+            repository: "repo",
+            tag: "mock-tag",
+            projectRoot: "mock-root/path",
+        };
+
+        await expect(sign(mockHttpClient, mockFileName, mockParameters, "mock-endpoint", mockToken)).resolves.toEqual({
+            expiration: "2023-06-11 12:00:00",
+            signedUrl: "mock-url",
+            uploadId: "mock-upload",
+        } satisfies SignedUrl);
+
+        expect(post).toHaveBeenCalledWith(
+            "mock-endpoint/upload",
+            {
+                data: {
+                    commit: "event-commit-hash",
+                    ref: "ref-name",
+                    owner: "owner",
+                    parent: ["parent-1", "parent-2"],
+                    provider: "github",
+                    pullRequest: 1,
+                    repository: "repo",
+                    tag: "mock-tag",
+                    projectRoot: "mock-root/path",
+                    fileName: mockFileName
+                },
             },
             { Authorization: `Basic ${btoa(mockToken)}` },
         );

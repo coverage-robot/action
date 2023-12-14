@@ -41,9 +41,15 @@ describe("Given the main runtime", function () {
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
-            commit: "event-commit-hash",
+            head: {
+                commit: "event-commit-hash",
+                ref: "ref-name",
+            },
+            base: {
+                commit: undefined,
+                ref: undefined,
+            },
             parent: ["parent-1", "parent-2"],
-            ref: "ref-name",
         } satisfies GitParameters);
 
         sign.mockReturnValueOnce({
@@ -67,12 +73,18 @@ describe("Given the main runtime", function () {
             expect.anything(),
             resolve(file),
             {
-                commit: "event-commit-hash",
+                head: {
+                    commit: "event-commit-hash",
+                    ref: "ref-name",
+                },
+                base: {
+                    commit: undefined,
+                    ref: undefined,
+                },
                 owner: "owner",
                 parent: ["parent-1", "parent-2"],
                 provider: "github",
                 pullRequest: undefined,
-                ref: "ref-name",
                 repository: "repo",
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
@@ -99,9 +111,15 @@ describe("Given the main runtime", function () {
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
-            commit: "event-commit-hash",
-            parent: ["parent-1", "parent-2"],
-            ref: "ref-name",
+            head: {
+                commit: "event-commit-hash",
+                ref: "ref-name",
+            },
+            base: {
+                commit: undefined,
+                ref: undefined,
+            },
+            parent: ["parent-1", "parent-2"]
         } satisfies GitParameters);
 
         sign.mockImplementation(() => {
@@ -121,12 +139,18 @@ describe("Given the main runtime", function () {
             expect.anything(),
             resolve(file),
             {
-                commit: "event-commit-hash",
+                head: {
+                    commit: "event-commit-hash",
+                    ref: "ref-name",
+                },
+                base: {
+                    commit: undefined,
+                    ref: undefined,
+                },
                 owner: "owner",
                 parent: ["parent-1", "parent-2"],
                 provider: "github",
                 pullRequest: undefined,
-                ref: "ref-name",
                 repository: "repo",
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",
@@ -153,9 +177,15 @@ describe("Given the main runtime", function () {
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
-            commit: "event-commit-hash",
+            head: {
+                commit: "event-commit-hash",
+                ref: "ref-name",
+            },
+            base: {
+                commit: undefined,
+                ref: undefined,
+            },
             parent: ["parent-1", "parent-2"],
-            ref: "ref-name",
         } satisfies GitParameters);
 
         sign.mockReturnValueOnce({
@@ -179,12 +209,18 @@ describe("Given the main runtime", function () {
             expect.anything(),
             resolve(file),
             {
-                commit: "event-commit-hash",
+                head: {
+                    commit: "event-commit-hash",
+                    ref: "ref-name",
+                },
+                base: {
+                    commit: undefined,
+                    ref: undefined,
+                },
                 owner: "owner",
                 parent: ["parent-1", "parent-2"],
                 provider: "github",
                 pullRequest: undefined,
-                ref: "ref-name",
                 repository: "repo",
                 tag: "mock-tag",
                 projectRoot: "mock-root/path",

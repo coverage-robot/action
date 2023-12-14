@@ -31563,8 +31563,9 @@ exports.sign = void 0;
 const core_1 = __nccwpck_require__(2186);
 const _errors_1 = __nccwpck_require__(248);
 const sign = (client, file, parameters, endpoint, token) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d;
     const response = yield client.postJson(`${endpoint}/upload`, {
-        data: Object.assign(Object.assign({}, parameters), { fileName: file }),
+        data: Object.assign(Object.assign({}, parameters), { head: undefined, ref: (_a = parameters.head) === null || _a === void 0 ? void 0 : _a.ref, commit: (_b = parameters.head) === null || _b === void 0 ? void 0 : _b.commit, base: undefined, baseRef: (_c = parameters.base) === null || _c === void 0 ? void 0 : _c.ref, baseCommit: (_d = parameters.base) === null || _d === void 0 ? void 0 : _d.commit, fileName: file }),
     }, {
         Authorization: `Basic ${btoa(token)}`,
     });
@@ -31692,26 +31693,36 @@ const _errors_1 = __nccwpck_require__(248);
 const core_2 = __nccwpck_require__(2186);
 const getEnvironmentVariable_1 = __nccwpck_require__(6693);
 const getGitParameters = ({ owner, repository }) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const commit = ((_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.sha) || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_SHA");
-    const ref = (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_HEAD_REF") || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_REF_NAME");
-    if (!commit) {
+    var _a, _b, _c;
+    const head = {
+        commit: (((_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.sha) || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_SHA")),
+        ref: ((0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_HEAD_REF") || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_REF_NAME"))
+    };
+    const base = {
+        commit: (((_b = github_1.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.base.sha) || undefined),
+        ref: (((_c = github_1.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.base.ref) || undefined)
+    };
+    if (!head.commit) {
         throw _errors_1.GitParametersError.missingCommit();
     }
-    if (!ref) {
+    if (!head.ref) {
         throw _errors_1.GitParametersError.missingRef();
     }
-    (0, core_2.info)(`Inferred reference as ${ref}`);
+    (0, core_2.info)(`Inferred reference as ${head.ref}`);
+    if (base.commit || base.ref) {
+        (0, core_2.info)(`Inferred PRs base reference as ${base.ref}`);
+        (0, core_2.info)(`Inferred PRs base commit as ${base.commit}`);
+    }
     const octokit = (0, github_1.getOctokit)((0, core_1.getInput)("github-token"));
     try {
         const { data: { parents }, } = yield octokit.rest.git.getCommit({
             owner,
             repo: repository,
-            commit_sha: commit,
+            commit_sha: head.commit,
         });
         const parentCommits = parents.map((parent) => parent.sha);
-        (0, core_2.info)(`Inferred commit as ${commit}, and its parent as ${parentCommits.join(",")}`);
-        return { parent: parentCommits, commit, ref };
+        (0, core_2.info)(`Inferred commit as ${head.commit}, and its parent as ${parentCommits.join(",")}`);
+        return { parent: parentCommits, head, base };
     }
     catch (error) {
         throw _errors_1.GitParametersError.missingParentCommit();

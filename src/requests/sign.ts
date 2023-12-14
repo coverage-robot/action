@@ -21,6 +21,12 @@ export const sign = async (
         {
             data: {
                 ...parameters,
+                head: undefined,
+                ref: parameters.head?.ref,
+                commit: parameters.head?.commit,
+                base: undefined,
+                baseRef: parameters.base?.ref,
+                baseCommit: parameters.base?.commit,
                 fileName: file,
             },
         },
