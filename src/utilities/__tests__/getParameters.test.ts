@@ -26,9 +26,15 @@ describe("Given the parameters helper", () => {
         } satisfies ContextParameters);
 
         getGitParameters.mockReturnValueOnce({
-            commit: "event-commit-hash",
-            parent: ["parent-1", "parent-2"],
-            ref: "ref-name",
+            head: {
+                commit: "event-commit-hash",
+                ref: "ref-name",
+            },
+            base: {
+                commit: undefined,
+                ref: undefined,
+            },
+            parent: ["parent-1", "parent-2"]
         } satisfies GitParameters);
 
         getInput.mockReturnValueOnce("mock-tag");

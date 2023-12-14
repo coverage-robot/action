@@ -236,7 +236,7 @@
     "base": {
       "label": "owner:master",
       "ref": "master",
-      "sha": "deb195d34694c3ee4dd66c3958b1793badd286a8",
+      "sha": "mock-base-commit",
       "user": {
         "login": "owner",
         "id": 1234,
