@@ -31945,15 +31945,15 @@ const github_1 = __nccwpck_require__(5438);
 const _errors_1 = __nccwpck_require__(248);
 const core_2 = __nccwpck_require__(2186);
 const getEnvironmentVariable_1 = __nccwpck_require__(6693);
-const getGitParameters = ({ owner, repository }) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+const getGitParameters = (_a) => __awaiter(void 0, [_a], void 0, function* ({ owner, repository }) {
+    var _b, _c, _d;
     const head = {
-        commit: (((_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.head.sha) || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_SHA")),
+        commit: (((_b = github_1.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.head.sha) || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_SHA")),
         ref: ((0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_HEAD_REF") || (0, getEnvironmentVariable_1.getEnvironmentVariable)("GITHUB_REF_NAME"))
     };
     const base = {
-        commit: (((_b = github_1.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.base.sha) || undefined),
-        ref: (((_c = github_1.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.base.ref) || undefined)
+        commit: (((_c = github_1.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.base.sha) || undefined),
+        ref: (((_d = github_1.context.payload.pull_request) === null || _d === void 0 ? void 0 : _d.base.ref) || undefined)
     };
     if (!head.commit) {
         throw _errors_1.GitParametersError.missingCommit();
