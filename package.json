@@ -23,7 +23,8 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^6.0.0",
     "@actions/glob": "^0.5.0",
-    "@actions/http-client": "^2.2.3"
+    "@actions/http-client": "^2.2.3",
+    "@types/node": "^18.19.68"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -36,6 +37,6 @@
     "js-yaml": "^4.1.0",
     "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.2"
   }
 }
