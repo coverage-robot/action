@@ -49,7 +49,7 @@ export const getGitParameters = async ({ owner, repository }: Pick<ContextParame
         info(`Inferred commit as ${head.commit}, and its parent as ${parentCommits.join(",")}`);
 
         return { parent: parentCommits, head, base };
-    } catch (error) {
+    } catch {
         throw GitParametersError.missingParentCommit();
     }
 };

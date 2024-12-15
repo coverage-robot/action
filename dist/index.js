@@ -32737,7 +32737,7 @@ const getGitParameters = (_a) => __awaiter(void 0, [_a], void 0, function* ({ ow
         (0, core_2.info)(`Inferred commit as ${head.commit}, and its parent as ${parentCommits.join(",")}`);
         return { parent: parentCommits, head, base };
     }
-    catch (error) {
+    catch (_e) {
         throw _errors_1.GitParametersError.missingParentCommit();
     }
 });
