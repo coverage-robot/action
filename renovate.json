@@ -10,12 +10,22 @@
     ],
     "packageRules": [
         {
+            "description": "Add javascript label o JS dependency updates",
             "matchFileNames": [
                 "**/package.json",
                 "**/package-lock.json"
             ],
             "addLabels": [
                 "javascript"
+            ]
+        },
+        {
+            "description": "Add github actions label to CI dependency updates",
+            "matchFileNames": [
+                ".github/workflows/**"
+            ],
+            "addLabels": [
+                "github-actions"
             ]
         }
     ]
