@@ -1,7 +1,7 @@
 import { context } from "@actions/github";
 import { info } from "@actions/core";
 import { ContextParametersError } from "@errors";
-import { getEnvironmentVariable } from "./getEnvironmentVariable";
+import { getEnvironmentVariable } from "./getEnvironmentVariable.js";
 import { existsSync, lstatSync } from "fs";
 
 export type ContextParameters = Awaited<ReturnType<typeof getContextParameters>>;

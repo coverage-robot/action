@@ -1,19 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "./lib",
-    "baseUrl": ".",
-    "rootDir": "./src",
-    "strict": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@requests": ["src/requests"],
-      "@utilities": ["src/utilities"],
-      "@errors": ["src/errors"]
-    }
-  },
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "NodeNext",
+        "outDir": "./lib",
+        "baseUrl": ".",
+        "rootDir": "./src",
+        "strict": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "NodeNext",
+        "isolatedModules": true,
+        "paths": {
+            "@errors": ["./src/errors/index.ts"],
+            "@errors/*": ["./src/errors/*"],
+            "@utilities": ["./src/utilities/index.ts"],
+            "@utilities/*": ["./src/utilities/*"],
+            "@requests": ["./src/requests/index.ts"],
+            "@requests/*": ["./src/requests/*"]
+        }
+    },
+    "exclude": ["node_modules"]
 }

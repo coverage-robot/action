@@ -1,32 +1,37 @@
+import { jest } from "@jest/globals";
 import { ContextParametersError } from "@errors";
 
-const context = {
-    repo: {},
-    payload: {},
-};
-const getEnvironmentVariable = jest.fn();
-
-import { getContextParameters } from "@utilities";
-import * as pullRequestContext from "./fixtures/pull_request.json";
-
-jest.mock("@actions/github", () => ({
-    context,
-}));
-jest.mock("../getEnvironmentVariable", () => ({
-    getEnvironmentVariable,
-}));
+import { default as pullRequestContext } from "./fixtures/pull_request.json" with { type: "json" };
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
 describe("Given the context parameters helper", function () {
+    beforeEach(() => {
+        jest.resetModules();
+    });
+
     it("returns the owner and repo from context", async () => {
-        context.repo = {
-            owner: "owner",
-            repo: "repo",
-        };
+        const getEnvironmentVariable = jest.fn();
+
+        jest.unstable_mockModule("@actions/github", () => ({
+            context: {
+                repo: {
+                    owner: "owner",
+                    repo: "repo",
+                },
+                payload: {},
+            },
+        }));
+        jest.unstable_mockModule("../getEnvironmentVariable", () => ({
+            getEnvironmentVariable,
+        }));
+
+        const { getContextParameters } = await import("../getContextParameters.js");
 
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
                 case "GITHUB_WORKSPACE":
-                    return __dirname;
+                    return dirname(fileURLToPath(import.meta.url));
                 default:
                     return undefined;
             }
@@ -35,21 +40,32 @@ describe("Given the context parameters helper", function () {
         expect(getContextParameters()).toEqual({
             owner: "owner",
             repository: "repo",
-            projectRoot: __dirname,
+            projectRoot: dirname(fileURLToPath(import.meta.url)),
         });
     });
 
     it("returns the pull request from payload context", async () => {
-        context.repo = {
-            owner: "owner",
-            repo: "repo",
-        };
-        context.payload = pullRequestContext;
+        const getEnvironmentVariable = jest.fn();
+
+        jest.unstable_mockModule("@actions/github", () => ({
+            context: {
+                repo: {
+                    owner: "owner",
+                    repo: "repo",
+                },
+                payload: pullRequestContext,
+            },
+        }));
+        jest.unstable_mockModule("../getEnvironmentVariable", () => ({
+            getEnvironmentVariable,
+        }));
+
+        const { getContextParameters } = await import("../getContextParameters.js");
 
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
                 case "GITHUB_WORKSPACE":
-                    return __dirname;
+                    return dirname(fileURLToPath(import.meta.url));
                 default:
                     return undefined;
             }
@@ -58,17 +74,26 @@ describe("Given the context parameters helper", function () {
         expect(getContextParameters()).toEqual({
             owner: "owner",
             pullRequest: 1,
-            projectRoot: __dirname,
+            projectRoot: dirname(fileURLToPath(import.meta.url)),
             repository: "repo",
         });
     });
 
-    it("validates project root exists", () => {
-        context.repo = {
-            owner: "owner",
-            repo: "repo",
-        };
-        context.payload = pullRequestContext;
+    it("validates project root exists", async () => {
+        const getEnvironmentVariable = jest.fn();
+
+        jest.unstable_mockModule("@actions/github", () => ({
+            context: {
+                repo: {
+                    owner: "owner",
+                    repo: "repo",
+                },
+                payload: pullRequestContext,
+            },
+        }));
+        jest.unstable_mockModule("../getEnvironmentVariable", () => ({
+            getEnvironmentVariable,
+        }));
 
         getEnvironmentVariable.mockImplementation((name) => {
             switch (name) {
@@ -79,6 +104,8 @@ describe("Given the context parameters helper", function () {
             }
         });
 
-        expect(() => getContextParameters()).toThrow(ContextParametersError.missingProjectRoot());
+        const { getContextParameters } = await import("../getContextParameters.js");
+
+        expect(() => getContextParameters()).toThrow(ContextParametersError.missingProjectRoot().message);
     });
 });

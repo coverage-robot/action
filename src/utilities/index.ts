@@ -1,3 +1,3 @@
-export { getGitParameters, GitParameters } from "./getGitParameters";
-export { getContextParameters, ContextParameters } from "./getContextParameters";
-export { getParameters, Parameters } from "./getParameters";
+export { getGitParameters, type GitParameters } from "./getGitParameters.js";
+export { getContextParameters, type ContextParameters } from "./getContextParameters.js";
+export { getParameters, type Parameters } from "./getParameters.js";

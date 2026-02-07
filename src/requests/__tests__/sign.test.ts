@@ -1,4 +1,5 @@
-import { sign, SignedUrl } from "../sign";
+import { jest } from "@jest/globals";
+import { sign, SignedUrl } from "../sign.js";
 import { HttpClient } from "@actions/http-client";
 import { SigningError } from "@errors";
 import { Parameters } from "@utilities";
@@ -59,7 +60,7 @@ describe("Given the sign helper", function () {
                     repository: "repo",
                     tag: "mock-tag",
                     projectRoot: "mock-root/path",
-                    fileName: mockFileName
+                    fileName: mockFileName,
                 },
             },
             { Authorization: `Basic ${btoa(mockToken)}` },
@@ -201,7 +202,7 @@ describe("Given the sign helper", function () {
                     repository: "repo",
                     tag: "mock-tag",
                     projectRoot: "mock-root/path",
-                    fileName: mockFileName
+                    fileName: mockFileName,
                 },
             },
             { Authorization: `Basic ${btoa(mockToken)}` },

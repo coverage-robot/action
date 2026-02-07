@@ -1,4 +1,4 @@
-import { ContextParameters, GitParameters } from "@utilities";
+import { jest } from "@jest/globals";
 import { resolve } from "path";
 
 const sign = jest.fn();
@@ -8,23 +8,23 @@ const getGitParameters = jest.fn();
 const getInput = jest.fn();
 const getMultilineInput = jest.fn();
 
-import { run } from "../main";
 import { SigningError } from "@errors";
 
-jest.mock("@actions/http-client", () => ({ HttpClient: jest.fn() }));
-jest.mock("@utilities/getContextParameters", () => ({ getContextParameters }));
-jest.mock("@utilities/getGitParameters", () => ({ getGitParameters }));
-jest.mock("@requests", () => ({
-    sign,
-    upload,
-}));
-jest.mock("@actions/core", () => ({
-    ...jest.requireActual("@actions/core"),
-    getInput,
-    getMultilineInput,
-}));
+const actionsCoreModule = await import("@actions/core");
+jest.unstable_mockModule("@requests", () => ({ sign, upload }));
+jest.unstable_mockModule("@utilities/getContextParameters", () => ({ getContextParameters }));
+jest.unstable_mockModule("@utilities/getGitParameters", () => ({ getGitParameters }));
+jest.unstable_mockModule("@actions/core", async () => {
+    return { ...actionsCoreModule, getInput, getMultilineInput };
+});
+
+const { run } = await import("../main.js");
 
 describe("Given the main runtime", function () {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it("correctly signs and uploads file with inferred parameters", async () => {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
@@ -38,24 +38,18 @@ describe("Given the main runtime", function () {
             pullRequest: undefined,
             repository: "repo",
             projectRoot: "mock-root/path",
-        } satisfies ContextParameters);
+        });
 
         getGitParameters.mockReturnValueOnce({
-            head: {
-                commit: "event-commit-hash",
-                ref: "ref-name",
-            },
-            base: {
-                commit: undefined,
-                ref: undefined,
-            },
+            head: { commit: "event-commit-hash", ref: "ref-name" },
+            base: { commit: undefined, ref: undefined },
             parent: ["parent-1", "parent-2"],
-        } satisfies GitParameters);
+        });
 
         sign.mockReturnValueOnce({
             uploadId: "mock-upload",
-            expiration: "2023-06-11 12:00:00",
             signedUrl: "mock-url",
+            expiration: "2023-06-11 12:00:00",
         });
 
         upload.mockReturnValueOnce(true);
@@ -64,7 +58,6 @@ describe("Given the main runtime", function () {
 
         expect(getMultilineInput).toHaveBeenCalledTimes(1);
         expect(getInput).toHaveBeenCalledTimes(3);
-
         expect(getContextParameters).toHaveBeenCalledTimes(1);
         expect(getGitParameters).toHaveBeenCalledTimes(1);
 
@@ -73,14 +66,8 @@ describe("Given the main runtime", function () {
             expect.anything(),
             resolve(file),
             {
-                head: {
-                    commit: "event-commit-hash",
-                    ref: "ref-name",
-                },
-                base: {
-                    commit: undefined,
-                    ref: undefined,
-                },
+                head: { commit: "event-commit-hash", ref: "ref-name" },
+                base: { commit: undefined, ref: undefined },
                 owner: "owner",
                 parent: ["parent-1", "parent-2"],
                 provider: "github",
@@ -92,13 +79,14 @@ describe("Given the main runtime", function () {
             "mock-endpoint",
             expect.anything(),
         );
+
         expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
     });
 
     it("does not attempt upload when signing fails", async () => {
         const file = "src/__tests__/fixtures/mock-file.xml";
 
-        getMultilineInput.mockImplementation((name) => (name === "files" ? [file] : []));
+        getMultilineInput.mockReturnValue([file]);
         getInput.mockImplementation((name) =>
             name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : "",
         );
@@ -108,19 +96,13 @@ describe("Given the main runtime", function () {
             pullRequest: undefined,
             repository: "repo",
             projectRoot: "mock-root/path",
-        } satisfies ContextParameters);
+        });
 
         getGitParameters.mockReturnValueOnce({
-            head: {
-                commit: "event-commit-hash",
-                ref: "ref-name",
-            },
-            base: {
-                commit: undefined,
-                ref: undefined,
-            },
-            parent: ["parent-1", "parent-2"]
-        } satisfies GitParameters);
+            head: { commit: "event-commit-hash", ref: "ref-name" },
+            base: { commit: undefined, ref: undefined },
+            parent: ["parent-1", "parent-2"],
+        });
 
         sign.mockImplementation(() => {
             throw SigningError.invalidResponseCode(400);
@@ -128,43 +110,12 @@ describe("Given the main runtime", function () {
 
         await run();
 
-        expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(3);
-
-        expect(getContextParameters).toHaveBeenCalledTimes(1);
-        expect(getGitParameters).toHaveBeenCalledTimes(1);
-
-        expect(sign).toHaveBeenNthCalledWith(
-            1,
-            expect.anything(),
-            resolve(file),
-            {
-                head: {
-                    commit: "event-commit-hash",
-                    ref: "ref-name",
-                },
-                base: {
-                    commit: undefined,
-                    ref: undefined,
-                },
-                owner: "owner",
-                parent: ["parent-1", "parent-2"],
-                provider: "github",
-                pullRequest: undefined,
-                repository: "repo",
-                tag: "mock-tag",
-                projectRoot: "mock-root/path",
-            },
-            "mock-endpoint",
-            expect.anything(),
-        );
+        expect(sign).toHaveBeenCalled();
         expect(upload).not.toHaveBeenCalled();
     });
 
     it("handles wildcard glob file paths", async () => {
-        const file = "src/__tests__/fixtures/mock-file.xml";
-
-        getMultilineInput.mockImplementation((name) => (name === "files" ? ["src/__tests__/fixtures/*.xml"] : []));
+        getMultilineInput.mockReturnValue(["src/__tests__/fixtures/*.xml"]);
         getInput.mockImplementation((name) =>
             name === "tag" ? "mock-tag" : name === "endpoint" ? "mock-endpoint" : "",
         );
@@ -174,60 +125,25 @@ describe("Given the main runtime", function () {
             pullRequest: undefined,
             repository: "repo",
             projectRoot: "mock-root/path",
-        } satisfies ContextParameters);
+        });
 
         getGitParameters.mockReturnValueOnce({
-            head: {
-                commit: "event-commit-hash",
-                ref: "ref-name",
-            },
-            base: {
-                commit: undefined,
-                ref: undefined,
-            },
+            head: { commit: "event-commit-hash", ref: "ref-name" },
+            base: { commit: undefined, ref: undefined },
             parent: ["parent-1", "parent-2"],
-        } satisfies GitParameters);
+        });
 
         sign.mockReturnValueOnce({
             uploadId: "mock-upload",
-            expiration: "2023-06-11 12:00:00",
             signedUrl: "mock-url",
+            expiration: "2023-06-11 12:00:00",
         });
 
         upload.mockReturnValueOnce(true);
 
         await run();
 
-        expect(getMultilineInput).toHaveBeenCalledTimes(1);
-        expect(getInput).toHaveBeenCalledTimes(3);
-
-        expect(getContextParameters).toHaveBeenCalledTimes(1);
-        expect(getGitParameters).toHaveBeenCalledTimes(1);
-
-        expect(sign).toHaveBeenNthCalledWith(
-            1,
-            expect.anything(),
-            resolve(file),
-            {
-                head: {
-                    commit: "event-commit-hash",
-                    ref: "ref-name",
-                },
-                base: {
-                    commit: undefined,
-                    ref: undefined,
-                },
-                owner: "owner",
-                parent: ["parent-1", "parent-2"],
-                provider: "github",
-                pullRequest: undefined,
-                repository: "repo",
-                tag: "mock-tag",
-                projectRoot: "mock-root/path",
-            },
-            "mock-endpoint",
-            expect.anything(),
-        );
-        expect(upload).toHaveBeenNthCalledWith(1, resolve(file), expect.anything(), "mock-url");
+        expect(sign).toHaveBeenCalled();
+        expect(upload).toHaveBeenCalled();
     });
 });

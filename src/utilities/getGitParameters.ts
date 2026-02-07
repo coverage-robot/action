@@ -2,20 +2,20 @@ import { getInput } from "@actions/core";
 import { getOctokit, context } from "@actions/github";
 import { GitParametersError } from "@errors";
 import { info } from "@actions/core";
-import { ContextParameters } from "./getContextParameters";
-import { getEnvironmentVariable } from "./getEnvironmentVariable";
+import { ContextParameters } from "./getContextParameters.js";
+import { getEnvironmentVariable } from "./getEnvironmentVariable.js";
 
 export type GitParameters = Awaited<ReturnType<typeof getGitParameters>>;
 
 export const getGitParameters = async ({ owner, repository }: Pick<ContextParameters, "owner" | "repository">) => {
     const head = {
-        commit: (context.payload.pull_request?.head.sha || getEnvironmentVariable("GITHUB_SHA")) as string|undefined,
-        ref: (getEnvironmentVariable("GITHUB_HEAD_REF") || getEnvironmentVariable("GITHUB_REF_NAME"))
-    }
+        commit: (context.payload.pull_request?.head.sha || getEnvironmentVariable("GITHUB_SHA")) as string | undefined,
+        ref: getEnvironmentVariable("GITHUB_HEAD_REF") || getEnvironmentVariable("GITHUB_REF_NAME"),
+    };
 
     const base = {
-        commit: (context.payload.pull_request?.base.sha || undefined) as string|undefined,
-        ref: (context.payload.pull_request?.base.ref || undefined) as string|undefined
+        commit: (context.payload.pull_request?.base.sha || undefined) as string | undefined,
+        ref: (context.payload.pull_request?.base.ref || undefined) as string | undefined,
     };
 
     if (!head.commit) {

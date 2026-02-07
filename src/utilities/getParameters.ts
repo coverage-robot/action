@@ -1,5 +1,5 @@
-import { getGitParameters } from "./getGitParameters";
-import { getContextParameters } from "./getContextParameters";
+import { getGitParameters } from "./getGitParameters.js";
+import { getContextParameters } from "./getContextParameters.js";
 import { getInput } from "@actions/core";
 
 export type Parameters = Awaited<ReturnType<typeof getParameters>>;

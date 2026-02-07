@@ -1,4 +1,5 @@
-import { upload } from "../upload";
+import { jest } from "@jest/globals";
+import { upload } from "../upload.js";
 import { HttpClient } from "@actions/http-client";
 import { readFileSync } from "fs";
 import { UploadError } from "@errors";

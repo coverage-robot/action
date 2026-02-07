@@ -1,4 +1,4 @@
-export { SigningError } from "./SigningError";
-export { UploadError } from "./UploadError";
-export { GitParametersError } from "./GitParametersError";
-export { ContextParametersError } from "./ContextParametersError";
+export { SigningError } from "./SigningError.js";
+export { UploadError } from "./UploadError.js";
+export { GitParametersError } from "./GitParametersError.js";
+export { ContextParametersError } from "./ContextParametersError.js";
