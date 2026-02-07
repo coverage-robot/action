@@ -3,7 +3,7 @@ import { HttpClient } from "@actions/http-client";
 import * as glob from "@actions/glob";
 import { getParameters, Parameters } from "@utilities";
 import { sign, upload } from "@requests";
-import { getToken } from "./utilities/getToken";
+import { getToken } from "./utilities/getToken.js";
 
 export const run = async () => {
     const client = new HttpClient("Client/Github");

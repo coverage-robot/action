@@ -1,27 +1,27 @@
-name: 'Coverage Robot Action'
-description: 'GitHub Action for integrating with Coverage Robot'
-author: 'Coverage Robot'
+name: "Coverage Robot Action"
+description: "GitHub Action for integrating with Coverage Robot"
+author: "Coverage Robot"
 branding:
-    icon: 'upload-cloud'
-    color: 'white'
+    icon: "upload-cloud"
+    color: "white"
 inputs:
-  files:
-    required: true
-    description: 'Multi-line selection of coverage files to upload'
-  tag:
-    required: true
-    description: 'Tag to use for the coverage upload'
-  token:
-    required: true
-    description: 'The authentication token to validate authenticity of uploads'
-  endpoint:
-      required: false
-      default: 'https://api.coveragerobot.com/v1'
-      description: 'Tag to use for the coverage upload'
-  github-token:
-    description: 'The GitHub token used to communicate with the Github API'
-    default: ${{ github.token }}
-    required: false
+    files:
+        required: true
+        description: "Multi-line selection of coverage files to upload"
+    tag:
+        required: true
+        description: "Tag to use for the coverage upload"
+    token:
+        required: true
+        description: "The authentication token to validate authenticity of uploads"
+    endpoint:
+        required: false
+        default: "https://api.coveragerobot.com/v1"
+        description: "Tag to use for the coverage upload"
+    github-token:
+        description: "The GitHub token used to communicate with the Github API"
+        default: ${{ github.token }}
+        required: false
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+    using: "node24"
+    main: "dist/index.js"
