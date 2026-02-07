@@ -12,27 +12,13 @@
         "moduleResolution": "NodeNext",
         "isolatedModules": true,
         "paths": {
-            "@errors": [
-                "./src/errors/index.ts"
-            ],
-            "@errors/*": [
-                "./src/errors/*"
-            ],
-            "@utilities": [
-                "./src/utilities/index.ts"
-            ],
-            "@utilities/*": [
-                "./src/utilities/*"
-            ],
-            "@requests": [
-                "./src/requests/index.ts"
-            ],
-            "@requests/*": [
-                "./src/requests/*"
-            ]
+            "@errors": ["./src/errors/index.ts"],
+            "@errors/*": ["./src/errors/*"],
+            "@utilities": ["./src/utilities/index.ts"],
+            "@utilities/*": ["./src/utilities/*"],
+            "@requests": ["./src/requests/index.ts"],
+            "@requests/*": ["./src/requests/*"]
         }
     },
-    "exclude": [
-        "node_modules"
-    ]
+    "exclude": ["node_modules"]
 }
