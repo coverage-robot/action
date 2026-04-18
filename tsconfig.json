@@ -3,6 +3,10 @@
         "target": "ES2022",
         "module": "NodeNext",
         "outDir": "./lib",
+        "types": [
+            "node",
+            "jest"
+        ],
         "rootDir": "./src",
         "strict": true,
         "noImplicitAny": true,
